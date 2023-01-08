@@ -1,3 +1,5 @@
+package programmers;
+
 import java.util.*;
 
 public class 개인정보수집유효기간 {
