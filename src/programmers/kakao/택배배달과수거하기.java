@@ -1,40 +1,5 @@
 package programmers.kakao;
 
-import java.util.ArrayList;
-import java.util.Stack;
-
-//public class 택배배달과수거하기 {
-//    public static long solution (int cap, int n, int[] deliveries, int[] pickups) {
-//        long answer;
-//        // 초기설정
-//        Stack<Integer> d = new Stack<>();
-//        Stack<Integer> p = new Stack<>();
-//
-//        // 스택에 넣기
-//        for(int i : deliveries){
-//            d.add(i);
-//        }
-//        for(int i : deliveries){
-//            p.add(i);
-//        }
-//        while(d.empty() && d.peek() == 0){
-//            d.pop();
-//        }
-//        while(p.empty() && p.peek() == 0){
-//            p.pop();
-//        }
-//
-//        answer = (d.size() > p.size() ? d.size() : p.size()) * 2;
-//
-//        while()
-//
-//        System.out.println();
-//        return answer;
-//    }
-
-
-
-
     public class 택배배달과수거하기 {
         public static long solution (int cap, int n, int[] deliveries, int[] pickups) {
             long answer = 0;
@@ -115,5 +80,35 @@ import java.util.Stack;
 
 
 
+//import java.util.ArrayList;
+//        import java.util.Stack;
 
+//public class 택배배달과수거하기 {
+//    public static long solution (int cap, int n, int[] deliveries, int[] pickups) {
+//        long answer;
+//        // 초기설정
+//        Stack<Integer> d = new Stack<>();
+//        Stack<Integer> p = new Stack<>();
+//
+//        // 스택에 넣기
+//        for(int i : deliveries){
+//            d.add(i);
+//        }
+//        for(int i : deliveries){
+//            p.add(i);
+//        }
+//        while(d.empty() && d.peek() == 0){
+//            d.pop();
+//        }
+//        while(p.empty() && p.peek() == 0){
+//            p.pop();
+//        }
+//
+//        answer = (d.size() > p.size() ? d.size() : p.size()) * 2;
+//
+//        while()
+//
+//        System.out.println();
+//        return answer;
+//    }
 
