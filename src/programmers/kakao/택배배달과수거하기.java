@@ -4,18 +4,43 @@ import java.util.ArrayList;
 
 public class 택배배달과수거하기 {
     public static long solution (int cap, int n, int[] deliveries, int[] pickups) {
-        long answer = n;
+        long answer = 0;
+        // 초기설정
         int d = 0;
         int p = 0;
         boolean bl = false;
-
         int dPoint = 0, pPoint = 0;
 
+        // 시작 인덱스 찾기
         for(int i = n - 1; i >= 0; i--){
-            for(int a = d; a >= 0; a--){
-                if(dPoint + deliveries[a] == cap){  // 배달 포인트가 같을 때
+            if(deliveries[i] != 0){
+                d = i;
+                break;
+            }
+        }
+        for(int i = n - 1; i >= 0; i--){
+            if(pickups[i] != 0) {
+                p = i;
+                break;
+            }
+        }
+        answer += (d > p ? d : p) + 1;
 
-                } else if(dPoint + deliveries[a] < cap){
+
+        while(true){
+            for(int a = d; a >= 0; a--){
+                if(a == 0 && !bl){
+                    if(dPoint + deliveries[a] > cap)
+                        d = 0;
+                    else
+                        d = -1;
+                } else if(dPoint + deliveries[a] == cap){  // 배달 포인트가 같을 때
+                    if(bl && deliveries[a] != 0){
+                        deliveries[a] = 0;
+                        break;
+                    }
+                    dPoint += deliveries[a];
+                } else if(dPoint + deliveries[a] < cap){  // 배달 포인트가 남을 때
                     if(bl && deliveries[a] != 0){
                         deliveries[a] = 0;
                     }
@@ -25,25 +50,70 @@ public class 택배배달과수거하기 {
                         bl = true;
                         d = a;
                     }
+                    if(dPoint == cap){
+                        break;
+                    }
                 }
             }
-            for(int b = p; b >= 0; b--){
+            bl = false;
 
+            for(int b = p; b >= 0; b--){
+                if(b == 0 && !bl){
+                    if(pPoint + pickups[b] > cap)
+                        p = 0;
+                    else
+                        p = -1;
+                } else if(pPoint + pickups[b] == cap){  // 배달 포인트가 같을 때
+                    if(bl && pickups[b] != 0){
+                        pickups[b] = 0;
+                        break;
+                    }
+                    pPoint += pickups[b];
+                } else if(pPoint + pickups[b] < cap){
+                    if(bl && pickups[b] != 0){
+                        pickups[b] = 0;
+                    }
+                    pPoint += pickups[b];
+                } else if(pPoint + pickups[b] > cap){
+                    if(!bl){
+                        bl = true;
+                        p = b;
+                    }
+                    if(pPoint == cap){
+                        break;
+                    }
+                }
             }
-            i = d > p ? d : p;
-            answer += i;
+
+            if(d + p == -2){
+                break;
+            }
+            answer += (d > p ? d : p) + 1;
+
+
+            //초기화
+            dPoint = 0;
+            pPoint = 0;
+            bl = false;
         }
-        return 0;
+        System.out.println(answer * 2);
+        return answer * 2;
     }
 
     public static void main(String[] args) {
         solution(4, 5, new int[]{1, 0, 3, 1, 2}, new int[]{0, 3, 0, 4, 0});
 //        solution(2, 7, new int[]{1, 0, 2, 0, 1, 0, 2}, new int[]{0, 2, 0, 1, 0, 2, 0});
+//        solution(3, 7, new int[]{0, 0, 0, 0, 0, 0, 0}, new int[]{0, 0, 0, 0, 0, 0, 0});
     }
 }
 
 
+// 5 3
+// 4 2
 
+// 7 5 3
+// 6 5 3 2
+// 7 5 3 2
 
 
 //    long answer = 0;
