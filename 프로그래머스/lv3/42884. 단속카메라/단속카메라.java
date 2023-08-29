@@ -3,28 +3,15 @@ import java.util.*;
 class Solution {
     public int solution(int[][] routes) {
         int len = routes.length;
-        int answer = 0;
-        boolean[] visited = new boolean[len];
-        int tmp = 0;
-        int compareLine = Arrays.stream(routes)
-            .mapToInt(v -> v[1])
-            .min()
-            .getAsInt();
+        int answer = 1;
+        Arrays.sort(routes, (v1, v2) -> Integer.compare(v1[1], v2[1]));
+        int compareLine = routes[0][1];
         
-        while (tmp != -1) {
-            answer++;
-            tmp = -1;
-            for (int i = 0; i < len; i++) {
-                if (visited[i])
-                    continue;
-                if (routes[i][0] <= compareLine && routes[i][1] >= compareLine) {
-                    visited[i] = true;
-                    continue;
-                }
-                if (tmp == -1 || routes[i][1] < tmp)
-                    tmp = routes[i][1];
+        for (int i = 1; i < len; i++) {
+            if (compareLine < routes[i][0]) {
+                compareLine = routes[i][1];
+                answer++;
             }
-            compareLine = tmp;
         }
         return answer;
     }
