@@ -1,17 +1,12 @@
-import java.util.*;
-import java.util.stream.*;
+import java.util.stream.IntStream;
 
 class Solution {
     public int solution(int[] num_list) {
-        int even = IntStream.range(0, num_list.length)
-            .filter(v -> v % 2 == 0)
-            .map(v -> num_list[v])
-            .sum();
-        int odd = IntStream.range(0, num_list.length)
-            .filter(v -> v % 2 != 0)
-            .map(v -> num_list[v])
-            .sum();
-        
-        return even > odd ? even : odd;
+        return Integer.max(IntStream.iterate(0, i -> i < num_list.length, i -> i + 2)
+                          .map(v -> num_list[v])
+                          .sum(),
+                          IntStream.iterate(1, i -> i < num_list.length, i -> i + 2)
+                          .map(v -> num_list[v])
+                          .sum());
     }
 }
