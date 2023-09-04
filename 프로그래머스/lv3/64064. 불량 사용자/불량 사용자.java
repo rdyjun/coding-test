@@ -7,12 +7,13 @@ class Solution {
     private ArrayList<ArrayList<Integer>> MatchingData = new ArrayList<>();
     private Set<String> answer = new HashSet<>();
     
+    /** [분리 함수 - dfs] 방문하지 않았던 노드 방문 */
     private void internalDfs (int n, int i, int[] visited) {
         if (visited[i] == 0)
             dfs(n, i, visited.clone());
     }
     
-    /** banned_id의 0 ~ 마지막 인덱스를 순회하면서 각 자리에 들어갈 수 있는 경우의 수 탐색 */
+    /** [dfs] banned_id의 0 ~ 마지막 인덱스를 순회하면서 각 자리에 들어갈 수 있는 경우의 수 탐색 */
     private void dfs (int n, int node, int[] visited) {
         visited[node] = 1;
         
@@ -37,7 +38,7 @@ class Solution {
             addByCompare(i, k, st, user_id[k]);
     }
     
-    /** [dfs 준비물 - 1] 각 banned_id 요소 별 들어갈 수 있는 user_id의 index를 담은 2중 배열 구성(MatchingData) */
+    /** [dfs 준비 - 1] 각 banned_id 요소 별 들어갈 수 있는 user_id의 index를 담은 2중 배열 구성(MatchingData) */
     private void createMatchingData (String[] banned_id, String[] user_id) {
         for (int i = 0; i < bannedLen; i++) {
             String st = banned_id[i].replaceAll("\\*", ".");
@@ -47,12 +48,17 @@ class Solution {
     }
     
     public int solution(String[] user_id, String[] banned_id) {
+        /** 배열 길이 설정 */
         userLen = user_id.length;
         bannedLen = banned_id.length;
+        
+        /** DFS를 위한 배열 생성 */
         createMatchingData(banned_id, user_id);
         
+        /** for문을 통해 경우의 수 탐색 */
         for (int i : MatchingData.get(0))
             dfs(0, i, new int[userLen]); // 0 1
+        
         return answer.size();
     }
 }
