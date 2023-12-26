@@ -18,7 +18,7 @@ class Solution {
         while (!stk.isEmpty())
             stringBuilder.append(stk.pop() - '0');
         for (int i = 0; i < k; i++)
-            stringBuilder.deleteCharAt(i);
+            stringBuilder.deleteCharAt(0);
         return stringBuilder
                 .reverse()
                 .toString();
