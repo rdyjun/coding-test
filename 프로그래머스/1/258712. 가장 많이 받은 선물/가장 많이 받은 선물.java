@@ -1,64 +1,49 @@
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Comparator;
 
 class Solution {
     public int solution(String[] friends, String[] gifts) {
         int friendsLen = friends.length;
         int giftsLen = gifts.length;
         
-        Map<String, Integer> totalGift = new HashMap<>();
-        Map<String, Integer> giftLog = new HashMap<>();
-        Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> friendsIndex = new HashMap<>();
+        for(int i = 0; i < friendsLen; i++)
+            friendsIndex.put(friends[i], i);
         
-        for(String giftName : gifts) {
-            String[] giftNames = giftName.split(" ");
+        int[] eachGift = new int[friendsLen];
+        int[][] giftTo = new int[friendsLen][friendsLen];
+        for(String gift : gifts) {
+            String[] div = gift.split(" ");
             
-            int giftCount = totalGift.getOrDefault(giftNames[0], 0);
-            totalGift.put(giftNames[0], giftCount + 1);
-            
-            giftCount = totalGift.getOrDefault(giftNames[1], 0);
-            totalGift.put(giftNames[1], giftCount - 1);
-            
-            int giftSpecificCount = giftLog.getOrDefault(giftName, 0);
-            giftLog.put(giftName, giftSpecificCount + 1);
+            eachGift[friendsIndex.get(div[0])]++;
+            eachGift[friendsIndex.get(div[1])]--;
+            giftTo[friendsIndex.get(div[0])][friendsIndex.get(div[1])]++;
         }
         
+        int[] answer = new int[friendsLen];
+        
         for(int i = 0; i < friendsLen; i++) {
-            String a = friends[i];
             for(int k = i + 1; k < friendsLen; k++) {
-                String b = friends[k];
-                
-                int AToB = giftLog.getOrDefault(a + " " + b, 0);
-                int BToA = giftLog.getOrDefault(b + " " + a, 0);
-                
-                if(AToB == BToA) {
-                    int aGift = totalGift.getOrDefault(a, 0);
-                    int bGift = totalGift.getOrDefault(b, 0);
+                if(giftTo[i][k] == giftTo[k][i]) {
+                    if(eachGift[i] > eachGift[k])
+                        answer[i]++;
                     
-                    if(aGift > bGift)
-                        result.put(a, result.getOrDefault(a, 0) + 1);
+                    if(eachGift[i] < eachGift[k])
+                        answer[k]++;
                     
-                    if(aGift < bGift)
-                        result.put(b, result.getOrDefault(b, 0) + 1);
-                        
                     continue;
                 }
                 
-                if(AToB > BToA) {
-                    result.put(a, result.getOrDefault(a, 0) + 1);
+                if(giftTo[i][k] > giftTo[k][i]) {
+                    answer[i]++;
                     continue;
                 }
                 
-                result.put(b, result.getOrDefault(b, 0) + 1);
+                answer[k]++;
             }
         }
         
-        int answer = 0;   
-        for(int value : result.values())
-            if(answer < value)
-                answer = value;
-        
-        return answer;
+        return Arrays.stream(answer).max().getAsInt();
     }
 }
