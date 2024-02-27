@@ -1,28 +1,24 @@
 import java.io.*;
-import java.util.StringTokenizer;
 
 public class Main {
+
+    private static final int m = 1234567891;
 
     public static void main(String[] args) throws IOException {
         IO.init();
 
-        long answer = 0;
+        long answer = 0L;
+        int n = Integer.parseInt(IO.read());
+        String s = IO.read();
 
-        StringTokenizer input = new StringTokenizer(IO.read(), " ");
-        int n = Integer.parseInt(input.nextToken());
-
-        input = new StringTokenizer(IO.read(), " ");
-        String s = input.nextToken();
+        long pow = 1;
 
         for(int i = 0; i < n; i++) {
-            char c = s.charAt(i);
-            int num = c - 'a' + 1;
-
-            answer += (num * Math.pow(31, i));
-            answer %= 1234567891;
+            answer += (s.charAt(i) - 'a' + 1) * pow;
+            pow = (pow * 31) % m;
         }
 
-        IO.write(answer);
+        IO.write(answer % m);
         IO.close();
     }
 }
