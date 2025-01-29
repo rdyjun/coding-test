@@ -42,41 +42,33 @@ class Solution {
         
         for (int i = 0; i < this.distLength; i++) {
             if (!visited[i]) {
-                boolean[] visitedClone = visited.clone();
-                visitedClone[i] = true;
-                
-                int[] permutationClone = permutation.clone();
-                permutationClone[depth] = this.dist[i];
-                searchPermutation(depth + 1, permutationClone, visitedClone);
+                visited[i] = true;
+                permutation[depth] = this.dist[i];
+                searchPermutation(depth + 1, permutation, visited);
+                visited[i] = false;
             }
         }
     }
     
     private void check(int startIndex, int[] permutation) {
-        int index = startIndex;
-        int nowPosition = this.weak[startIndex];
-        int endPoint = this.weak[startIndex + this.weakLength - 1];
-        int friend = 0;
-
-        // 각 순열을 돌면서 커버가 되는지 확인
-        for (int distValue : permutation) {
-            nowPosition += distValue;
-            friend++;
-            if (nowPosition >= endPoint) {
-                this.answer = Math.min(this.answer, friend);
-                return;
+        int position = this.weak[startIndex] + permutation[0];
+        int endIndex = startIndex + this.weakLength - 1;
+        int friend = 1;
+        
+        for (int middleIndex = startIndex; middleIndex <= endIndex; middleIndex++) {      
+            if (this.weak[middleIndex] > position) {
+                if (friend >= this.distLength) {
+                    return;
+                }
+                position = this.weak[middleIndex] + permutation[friend];
+                friend++;
             }
-
+            
             if (friend >= this.answer) {
                 return;
             }
-
-            for (int w = index + 1; w < this.weakLength * 2; w++) {
-                if (this.weak[w] > nowPosition) {
-                    nowPosition = this.weak[w];
-                    break;
-                }
-            }
         }
+        
+        this.answer = Math.min(this.answer, friend);
     }
 }
